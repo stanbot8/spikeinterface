@@ -18,8 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         # "macos-latest", "windows-latest"
-        os:
-        - ubuntu-latest
+        os: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v6
       with:
@@ -105,7 +104,7 @@ jobs:
         AB_RUN_ID: ${{ github.run_id }}
         AB_HEAD_SHA: 7d7bd2140b3266c7c4205d22a5c46f9440bf9951
         AB_WORKFLOW_DIGEST: 
-          aaf06d40eeb702f9775e45b75586556fc14f1f1c135ab2ffef400a4905989094
+          a7d48e4e7b3b936afc2f204de888867ffe1636570d42dec1a9fee83e60ef0c89
         AB_EVENT: ${{ github.event_name }}
         AB_SCHEDULE: ${{ github.event.schedule || '' }}
         AB_VARIABLES: ${{ toJSON(vars) }}

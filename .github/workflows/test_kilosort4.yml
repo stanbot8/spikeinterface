@@ -8,6 +8,7 @@ on:
     paths:
     - '**/kilosort4.py'
     - '**/test_kilosort4_ci.py'
+
 jobs:
   versions:
     # Poll Pypi for all released KS4 versions >4.0.16, save to JSON
@@ -60,10 +61,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version:
-        - '3.12'
-        os:
-        - ubuntu-latest
+        python-version: ['3.12']
+        os: [ubuntu-latest]
         ks_version: ${{ fromJson(needs.versions.outputs.matrix) }}
     steps:
     - name: Checkout repository
@@ -134,7 +133,7 @@ jobs:
         AB_RUN_ID: ${{ github.run_id }}
         AB_HEAD_SHA: 7d7bd2140b3266c7c4205d22a5c46f9440bf9951
         AB_WORKFLOW_DIGEST: 
-          1989a0ef4be700a3d57cd7638e6b64812c279fbacddf2384b6b41ee8544c50d3
+          ce32da07f53c5a6a364198bdca12c01ccd3f3edbef80fbfdf6775b01b0b9cd2e
         AB_EVENT: ${{ github.event_name }}
         AB_SCHEDULE: ${{ github.event.schedule || '' }}
         AB_VARIABLES: ${{ toJSON(vars) }}

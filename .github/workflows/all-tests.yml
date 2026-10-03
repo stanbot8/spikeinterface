@@ -5,12 +5,10 @@ on:
   schedule:
   - cron: 0 12 * * 0      # Weekly on Sunday at noon UTC
   pull_request:
-    types:
-    - synchronize
-    - opened
-    - reopened
+    types: [synchronize, opened, reopened]
     branches:
     - main
+
 env:
   KACHERY_API_KEY: ${{ secrets.KACHERY_API_KEY }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -29,13 +27,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version:                   # Lower and higher versions we support
-        - '3.10'
-        - '3.13'
-        os:
-        - macos-latest
-        - windows-latest
-        - ubuntu-latest
+        python-version: ['3.10', '3.13']  # Lower and higher versions we support
+        os: [macos-latest, windows-latest, ubuntu-latest]
     steps:
     - uses: actions/checkout@v6
       with:
@@ -307,7 +300,7 @@ jobs:
         AB_RUN_ID: ${{ github.run_id }}
         AB_HEAD_SHA: 7d7bd2140b3266c7c4205d22a5c46f9440bf9951
         AB_WORKFLOW_DIGEST: 
-          84ea8355a87a05b2aa13b92f75b0185132b795663d4531cd4a40954d9e1768ca
+          4e10b52a38aba4b8d42df253932a0bc07de6f0de11fa47126d5504972bf806a4
         AB_EVENT: ${{ github.event_name }}
         AB_SCHEDULE: ${{ github.event.schedule || '' }}
         AB_VARIABLES: ${{ toJSON(vars) }}
