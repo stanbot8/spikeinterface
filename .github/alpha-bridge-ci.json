@@ -1,21 +1,21 @@
 {
   "definition_blob_sha1": {
-    ".github/workflows/all-tests.yml": "406c53d9530b052f3ff597377313d7a65dffa885",
+    ".github/workflows/all-tests.yml": "6a946d9c597339459f3d575e0bf7e73f332408e8",
     ".github/workflows/alpha-bridge-ci-verify.yml": "21051178fb840f31162cde1a64943007a2178f3f",
-    ".github/workflows/caches_cron_job.yml": "fbed9d4f8c0433cde400900406d026b4e4febd9c",
-    ".github/workflows/full-test-with-codecov.yml": "97e7162e1360ebd14118692edeec338d8fb2c296",
-    ".github/workflows/installation-tips-test.yml": "0833f1f093002b8b1438d7fb65b85bc3a04218eb",
-    ".github/workflows/test_kilosort4.yml": "493eec179487df976908e5d9b8f17a48081c7d9e"
+    ".github/workflows/caches_cron_job.yml": "4bcd1ac690e214a778c074e515d5e34c240c75a9",
+    ".github/workflows/full-test-with-codecov.yml": "ea9de225fded1c1dcee66659aef34f5db9dbc5f2",
+    ".github/workflows/installation-tips-test.yml": "682de4ac37ab5989b7b3cd09a419b6928f8f471f",
+    ".github/workflows/test_kilosort4.yml": "741ad79fd28e7df503c259b22166987857e8c306"
   },
   "definition_sha256": {
-    ".github/workflows/all-tests.yml": "ecc4f5b5d2b142534046a52f1baba73cff3e70ad8dce39b77f100cf1c3428bce",
+    ".github/workflows/all-tests.yml": "1e393126354ab19604a788b5289771694d550c864e7f50c60ec265c5f03d7c5b",
     ".github/workflows/alpha-bridge-ci-verify.yml": "f1d0d506e1faf2ef9e00102fbf464fa1a74203bf3463e623621402b9de9e8a45",
-    ".github/workflows/caches_cron_job.yml": "17177d64ecfa8d7dab8669c0d8ae16ffa7edff0e03f88551495769c093266ceb",
-    ".github/workflows/full-test-with-codecov.yml": "5a1b788f135309e6d7d891d62de7599fbc3a6128309bd9154a3d6f87322baf54",
-    ".github/workflows/installation-tips-test.yml": "51237b0b74a30d1a00f9bf7ea41be5afb0c6840ace38d4903e9f309e285f7b66",
-    ".github/workflows/test_kilosort4.yml": "3c91b31bf7d16ce8ba180a18b48484d7b9e9be3b9463744822730fa1f776d627"
+    ".github/workflows/caches_cron_job.yml": "aedc354836ca594b61db10f2014f94a9e7f61d6cd93fbfb88120952d74903778",
+    ".github/workflows/full-test-with-codecov.yml": "723b67c9ae2c6027f4a5f506c98516cba86acb8e5750442a42906fa168bd1ed8",
+    ".github/workflows/installation-tips-test.yml": "a41bbce14430d5729e95e4e928da2138bcc8079000e6f141b903a30ec3bd1abe",
+    ".github/workflows/test_kilosort4.yml": "705e4467d3293deede21e1ebf5fd90196a3c0fd7ec5cd33e0d9c408bcf22ad71"
   },
-  "generator_sha256": "34bc8c1c1eb9b2799c6a06a6f7bd056799561a0342e1ccd9d7ec69c0f000ae82",
+  "generator_sha256": "9fe7eb2612d4c4d8436e5a627541cad32d0dcba429639855b5a0a2af04b9729a",
   "schema": "alpha-bridge/fork-ci",
   "source_branch": "main",
   "source_commit": "7d7bd2140b3266c7c4205d22a5c46f9440bf9951",

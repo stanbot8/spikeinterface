@@ -98,10 +98,13 @@ jobs:
       shell: bash
 
     - name: Pip list
-      run: uv pip list --system
+      run: |-
+        uv pip list --system
+
 
     - name: Test core
-      run: pytest -m "core"
+      run: |-
+        pytest -m "core"
       shell: bash
 
     - name: Install Dependencies for Timing Display
@@ -113,9 +116,9 @@ jobs:
     - name: Get current hash (SHA) of the ephy_testing_data repo
       shell: bash
       id: repo_hash
-      run: echo "dataset_hash=$(git ls-remote 
-        https://gin.g-node.org/NeuralEnsemble/ephy_testing_data.git HEAD | cut 
-        -f1)" >> $GITHUB_OUTPUT
+      run: |-
+        echo "dataset_hash=$(git ls-remote https://gin.g-node.org/NeuralEnsemble/ephy_testing_data.git HEAD | cut -f1)" >> $GITHUB_OUTPUT
+
 
     - name: Cache datasets
       if: env.RUN_EXTRACTORS_TESTS == 'true' || env.RUN_PREPROCESSING_TESTS == 
@@ -149,7 +152,9 @@ jobs:
 
     - name: Set execute permissions on run_tests.sh
       shell: bash
-      run: chmod +x .github/run_tests.sh
+      run: |-
+        chmod +x .github/run_tests.sh
+
 
     - name: Test extractors
       shell: bash
@@ -300,7 +305,7 @@ jobs:
         AB_RUN_ID: ${{ github.run_id }}
         AB_HEAD_SHA: 7d7bd2140b3266c7c4205d22a5c46f9440bf9951
         AB_WORKFLOW_DIGEST: 
-          4e10b52a38aba4b8d42df253932a0bc07de6f0de11fa47126d5504972bf806a4
+          32484bca2e76579d45cdc370e227cb601dd4ab8f47b5806e95b72304e9dbf7c3
         AB_EVENT: ${{ github.event_name }}
         AB_SCHEDULE: ${{ github.event.schedule || '' }}
         AB_VARIABLES: ${{ toJSON(vars) }}

@@ -45,8 +45,8 @@ jobs:
         enableCrossOsArchive: true   # One cache for every runner OS, built here on Linux
         lookup-only: 'true'   # Avoids downloading the data, saving behavior is not affected.
     - name: Cache found?
-      run: echo "Cache-hit == ${{steps.cache-datasets.outputs.cache-hit == 
-        'true'}}"
+      run: |-
+        echo "Cache-hit == ${{steps.cache-datasets.outputs.cache-hit == 'true'}}"
       shell: bash
     - name: Installing datalad and git-annex
       if: steps.cache-datasets.outputs.cache-hit != 'true'
@@ -109,7 +109,7 @@ jobs:
         AB_RUN_ID: ${{ github.run_id }}
         AB_HEAD_SHA: 7d7bd2140b3266c7c4205d22a5c46f9440bf9951
         AB_WORKFLOW_DIGEST: 
-          666db9bb57ce26119fcb53176357272d15e7873055daea5bb60138c936393b0d
+          30822ff82c03f7e7beed30863e95d5feb3f5a178dc339e695bfa32f9b405b6aa
         AB_EVENT: ${{ github.event_name }}
         AB_SCHEDULE: ${{ github.event.schedule || '' }}
         AB_VARIABLES: ${{ toJSON(vars) }}

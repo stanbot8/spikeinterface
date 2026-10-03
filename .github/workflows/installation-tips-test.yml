@@ -32,18 +32,22 @@ jobs:
         enable-cache: true
 
     - name: Install requirements
-      run: uv pip install --system -r 
-        ./installation_tips/beginner_requirements_stable.txt
+      run: |-
+        uv pip install --system -r ./installation_tips/beginner_requirements_stable.txt
     - name: Check Installation Tips (mac)
       if: ${{ matrix.os == 'macos-latest' }}
-      run: python ./installation_tips/check_your_install.py --ci --short 
-        --skip-kilosort4                                                                  # ci flag turns off gui
+      run: |-
+        python ./installation_tips/check_your_install.py --ci --short --skip-kilosort4
+       # ci flag turns off gui
     - name: Check Installation Tips (linux/windows)
       if: ${{ matrix.os != 'macos-latest' }}
-      run: python ./installation_tips/check_your_install.py --ci --short # ci flag turns off gui
+      run: |-
+        python ./installation_tips/check_your_install.py --ci --short
+       # ci flag turns off gui
     - name: Windows cleanup
       if: ${{ matrix.os == 'windows-latest' }}
-      run: python ./installation_tips/cleanup_for_windows.py
+      run: |-
+        python ./installation_tips/cleanup_for_windows.py
     needs:
     - alpha_bridge_inputs
     if: ${{ (success()) && needs.alpha_bridge_inputs.outputs.changed == 'true' 
@@ -69,7 +73,7 @@ jobs:
         AB_RUN_ID: ${{ github.run_id }}
         AB_HEAD_SHA: 7d7bd2140b3266c7c4205d22a5c46f9440bf9951
         AB_WORKFLOW_DIGEST: 
-          8ba1b0992971b1999ffc798942a3c46b13aaaf54243090680323821694616e01
+          ebddfc3d39016b9075a500dc1e815bdf0cfefd1ef12041602bf8f3a4a24174b1
         AB_EVENT: ${{ github.event_name }}
         AB_SCHEDULE: ${{ github.event.schedule || '' }}
         AB_VARIABLES: ${{ toJSON(vars) }}
