@@ -1,21 +1,21 @@
 {
   "definition_blob_sha1": {
-    ".github/workflows/all-tests.yml": "880efa4451bfe90e1462b87d8968a8726a2a8dd2",
-    ".github/workflows/alpha-bridge-ci-verify.yml": "211d78b275bbb87055d46d18edfc9b309afb7fd3",
-    ".github/workflows/caches_cron_job.yml": "8fa359130195bf338d035b4b02d5af6bab16c37e",
-    ".github/workflows/full-test-with-codecov.yml": "e243b9b5a63bd8fe2d0763283aeac1980914ced9",
-    ".github/workflows/installation-tips-test.yml": "e4d1f9c5f0533329a6c5d9403b0017630147ef7a",
-    ".github/workflows/test_kilosort4.yml": "2efc5cd2b5ef91b9263ce41654658aac42a2d70f"
+    ".github/workflows/all-tests.yml": "6f8253708866d361c29a72fa0123e53f65f9d2b4",
+    ".github/workflows/alpha-bridge-ci-verify.yml": "21051178fb840f31162cde1a64943007a2178f3f",
+    ".github/workflows/caches_cron_job.yml": "fbed9d4f8c0433cde400900406d026b4e4febd9c",
+    ".github/workflows/full-test-with-codecov.yml": "21b6d6c2ac83480386315f6b0025f07dba46e1b4",
+    ".github/workflows/installation-tips-test.yml": "0833f1f093002b8b1438d7fb65b85bc3a04218eb",
+    ".github/workflows/test_kilosort4.yml": "7379b0aa707ea6ca1c3d09668b29aa5514ced885"
   },
   "definition_sha256": {
-    ".github/workflows/all-tests.yml": "4b8d9cbcf60cf5066ef8d7ca44075ae831a92f88fb3a710c154ef347eea1a034",
-    ".github/workflows/alpha-bridge-ci-verify.yml": "4cac5461d20019fd71bd15ab6e775a433bcfc570d3cc96f9132a4bf68d15c04e",
-    ".github/workflows/caches_cron_job.yml": "da5ea4478e779b017c5b94bfaad220c22746a2c055491b0277b3e6b47a2f9fd2",
-    ".github/workflows/full-test-with-codecov.yml": "1614583bb82becbacbd09a4b2e50e032012e2b4207342365c0bf3203879d9250",
-    ".github/workflows/installation-tips-test.yml": "ba8018b25618e2633c210e38c1cf170afb40446308d84d58117c5eccac6f38c9",
-    ".github/workflows/test_kilosort4.yml": "5166f5a7fe1eb5032f9c76232a680ddca73c17ae933d6aec8bd59bedb35cf9f1"
+    ".github/workflows/all-tests.yml": "1a854ebddf2fd7bfeecf999d739c6f36fef49a10184fcc8f9492cc6702a5276e",
+    ".github/workflows/alpha-bridge-ci-verify.yml": "f1d0d506e1faf2ef9e00102fbf464fa1a74203bf3463e623621402b9de9e8a45",
+    ".github/workflows/caches_cron_job.yml": "17177d64ecfa8d7dab8669c0d8ae16ffa7edff0e03f88551495769c093266ceb",
+    ".github/workflows/full-test-with-codecov.yml": "3d0d55e7232ae795bbc558e1df0a924150a910c50cc49ad7f761f0aa6a7b4e64",
+    ".github/workflows/installation-tips-test.yml": "51237b0b74a30d1a00f9bf7ea41be5afb0c6840ace38d4903e9f309e285f7b66",
+    ".github/workflows/test_kilosort4.yml": "706f27b2a449a24ea2e3a562bb1a4f14df6b070ed9d342c761c6506068a60afd"
   },
-  "generator_sha256": "f5fbad0230ba7fa85305a317f424ab1f31bb96ff28ce023a46664fdaad8051c9",
+  "generator_sha256": "d20fb8b8348d1a9a5c6e1057d775b208188196d5c2634d6ec392227f92b995f5",
   "schema": "alpha-bridge/fork-ci",
   "source_branch": "main",
   "source_commit": "7d7bd2140b3266c7c4205d22a5c46f9440bf9951",
