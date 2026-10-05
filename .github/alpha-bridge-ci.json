@@ -1,21 +1,31 @@
 {
   "definition_blob_sha1": {
-    ".github/workflows/all-tests.yml": "6f317a8f2d3d510a91cd17775e4be0e98e7bef7b",
-    ".github/workflows/alpha-bridge-ci-verify.yml": "d0cf89303388ac1271c908436e9f4bfe75bae884",
-    ".github/workflows/caches_cron_job.yml": "4a4c784c41fa253cc12d4942a40d0bd6d8269895",
-    ".github/workflows/full-test-with-codecov.yml": "46a2796ed2f6d114235c1bba00d12314417a01e3",
-    ".github/workflows/installation-tips-test.yml": "5079568432dc213d674963626391046ad5caaaea",
-    ".github/workflows/test_kilosort4.yml": "d3b7faa264a85233dfedaed8be1fae441e3a140e"
+    ".github/workflows/all-tests.yml": "e2ee2baa5dc10bed230fdd9c0b8d593baa3fa2cb",
+    ".github/workflows/alpha-bridge-ci-verify.yml": "d19efeb3bd029beb4c50fd874010d2b930d20715",
+    ".github/workflows/caches_cron_job.yml": "083674a19e9b111c50852f765bf57058d7d5803b",
+    ".github/workflows/cross_version_serialization.yml": "d2f73fc90b7973588f58962c571344c5b08aac9b",
+    ".github/workflows/deepinterpolation.yml": "596c5d9fc427e1da29043c3575ef7b66874310ba",
+    ".github/workflows/full-test-with-codecov.yml": "0582df0857dcf361569363df1ec998aadb2235b3",
+    ".github/workflows/installation-tips-test.yml": "4ec9f94351abb33d8ddb1640c400dbaea80bb8e9",
+    ".github/workflows/issue-on-change-matlab.yml": "69b962f1148a695df147f246dc0a863ec48c746b",
+    ".github/workflows/publish-to-pypi.yml": "063e8060bbbadb63b3a965e537b690d87db4f93a",
+    ".github/workflows/test_imports.yml": "fca19fa98e3eb441923cbd8c5cc8dc698f06a91b",
+    ".github/workflows/test_kilosort4.yml": "799eeb5ddb72be62cb67298dd0872df6f1ebdfbb"
   },
   "definition_sha256": {
-    ".github/workflows/all-tests.yml": "30887f5e0d20a1c219d86507705b9c7bc94530227a6f740c2dc16d940e3d49d2",
-    ".github/workflows/alpha-bridge-ci-verify.yml": "99e25329cff2a8ae245f2f99850472bdd82f571c3bc33fadfc5ac11b9f29cb7e",
-    ".github/workflows/caches_cron_job.yml": "28d8a5667e622665851b00460a6de78d2120a93875530e4e3ed2dc0972dcf577",
-    ".github/workflows/full-test-with-codecov.yml": "2835a683f1a5d82bc341da97c6967edfef7c7641d09de41d291665f93a457dde",
-    ".github/workflows/installation-tips-test.yml": "d3873bced904f1fe6b73f55e5047cdc79e0419677f29cf4e1a0b2f165d724438",
-    ".github/workflows/test_kilosort4.yml": "067187850b0a4774b1d0e4da680227397bceec61f0452fd43f970b38e6c430ab"
+    ".github/workflows/all-tests.yml": "add1e60245fcf9fc758f6b3e20359019a3c75f551c6de5be4f474f016240685a",
+    ".github/workflows/alpha-bridge-ci-verify.yml": "8fde9e2f5e1b37bbbb22794427ac6d217d8b18bc857606edd0b072e89c58b436",
+    ".github/workflows/caches_cron_job.yml": "b4cdae267b640116de4cbb0d071e32511be3a208a7876920769f7035cc976d25",
+    ".github/workflows/cross_version_serialization.yml": "749fd3bbbbe59c9b33a54c079617227fdafabaaedc2da62ad0a8b252e33ba9de",
+    ".github/workflows/deepinterpolation.yml": "740220540d87d0c8f1dda1c3227b50cdca20892532b2b76dbbc4f6d319fc8d57",
+    ".github/workflows/full-test-with-codecov.yml": "4a7756ceb22bc03d7b69e43edad01f21c2ecc0b81c43e0e90e2fa48f30817a14",
+    ".github/workflows/installation-tips-test.yml": "28886a6869db419baf9b00d93f064b316cefba719d082bab28b6669a5e43440d",
+    ".github/workflows/issue-on-change-matlab.yml": "20da3c23b020d88be23b5836e4e72f740e6a1069c618bed99b411f123a8677af",
+    ".github/workflows/publish-to-pypi.yml": "56a63b6b060b65b38f43f02289ea2b5fe741d8f5e753d288656451622e8a57dc",
+    ".github/workflows/test_imports.yml": "023eb6c6d0b6215aecee83833d7e850ee525f681ab68c5483e97fb3ec8d4917f",
+    ".github/workflows/test_kilosort4.yml": "67ddbda0beba4303e05750ae09cedf59adde827351b4c32f40a7831dcf1dd8ff"
   },
-  "generator_sha256": "8bff038bcb711330ba78bf433a2923d57d4ddfeedd59b8324e44e2a59f6b0389",
+  "generator_sha256": "f9d11fba5b604bac754f7ab7e40ccde549adf8e029da2ca91ed14e9ab94c0775",
   "schema": "alpha-bridge/fork-ci",
   "source_branch": "main",
   "source_commit": "6bec8d9a417dc534c99b1f90a4f874c20906528e",
@@ -25,8 +35,13 @@
     ".github/workflows/all-tests.yml",
     ".github/workflows/alpha-bridge-ci-verify.yml",
     ".github/workflows/caches_cron_job.yml",
+    ".github/workflows/cross_version_serialization.yml",
+    ".github/workflows/deepinterpolation.yml",
     ".github/workflows/full-test-with-codecov.yml",
     ".github/workflows/installation-tips-test.yml",
+    ".github/workflows/issue-on-change-matlab.yml",
+    ".github/workflows/publish-to-pypi.yml",
+    ".github/workflows/test_imports.yml",
     ".github/workflows/test_kilosort4.yml"
   ]
 }
