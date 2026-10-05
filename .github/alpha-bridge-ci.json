@@ -1,24 +1,24 @@
 {
   "definition_blob_sha1": {
-    ".github/workflows/all-tests.yml": "6a946d9c597339459f3d575e0bf7e73f332408e8",
-    ".github/workflows/alpha-bridge-ci-verify.yml": "21051178fb840f31162cde1a64943007a2178f3f",
-    ".github/workflows/caches_cron_job.yml": "4bcd1ac690e214a778c074e515d5e34c240c75a9",
-    ".github/workflows/full-test-with-codecov.yml": "ea9de225fded1c1dcee66659aef34f5db9dbc5f2",
-    ".github/workflows/installation-tips-test.yml": "682de4ac37ab5989b7b3cd09a419b6928f8f471f",
-    ".github/workflows/test_kilosort4.yml": "741ad79fd28e7df503c259b22166987857e8c306"
+    ".github/workflows/all-tests.yml": "6f317a8f2d3d510a91cd17775e4be0e98e7bef7b",
+    ".github/workflows/alpha-bridge-ci-verify.yml": "d0cf89303388ac1271c908436e9f4bfe75bae884",
+    ".github/workflows/caches_cron_job.yml": "4a4c784c41fa253cc12d4942a40d0bd6d8269895",
+    ".github/workflows/full-test-with-codecov.yml": "46a2796ed2f6d114235c1bba00d12314417a01e3",
+    ".github/workflows/installation-tips-test.yml": "5079568432dc213d674963626391046ad5caaaea",
+    ".github/workflows/test_kilosort4.yml": "d3b7faa264a85233dfedaed8be1fae441e3a140e"
   },
   "definition_sha256": {
-    ".github/workflows/all-tests.yml": "1e393126354ab19604a788b5289771694d550c864e7f50c60ec265c5f03d7c5b",
-    ".github/workflows/alpha-bridge-ci-verify.yml": "f1d0d506e1faf2ef9e00102fbf464fa1a74203bf3463e623621402b9de9e8a45",
-    ".github/workflows/caches_cron_job.yml": "aedc354836ca594b61db10f2014f94a9e7f61d6cd93fbfb88120952d74903778",
-    ".github/workflows/full-test-with-codecov.yml": "723b67c9ae2c6027f4a5f506c98516cba86acb8e5750442a42906fa168bd1ed8",
-    ".github/workflows/installation-tips-test.yml": "a41bbce14430d5729e95e4e928da2138bcc8079000e6f141b903a30ec3bd1abe",
-    ".github/workflows/test_kilosort4.yml": "705e4467d3293deede21e1ebf5fd90196a3c0fd7ec5cd33e0d9c408bcf22ad71"
+    ".github/workflows/all-tests.yml": "30887f5e0d20a1c219d86507705b9c7bc94530227a6f740c2dc16d940e3d49d2",
+    ".github/workflows/alpha-bridge-ci-verify.yml": "99e25329cff2a8ae245f2f99850472bdd82f571c3bc33fadfc5ac11b9f29cb7e",
+    ".github/workflows/caches_cron_job.yml": "28d8a5667e622665851b00460a6de78d2120a93875530e4e3ed2dc0972dcf577",
+    ".github/workflows/full-test-with-codecov.yml": "2835a683f1a5d82bc341da97c6967edfef7c7641d09de41d291665f93a457dde",
+    ".github/workflows/installation-tips-test.yml": "d3873bced904f1fe6b73f55e5047cdc79e0419677f29cf4e1a0b2f165d724438",
+    ".github/workflows/test_kilosort4.yml": "067187850b0a4774b1d0e4da680227397bceec61f0452fd43f970b38e6c430ab"
   },
-  "generator_sha256": "9fe7eb2612d4c4d8436e5a627541cad32d0dcba429639855b5a0a2af04b9729a",
+  "generator_sha256": "8bff038bcb711330ba78bf433a2923d57d4ddfeedd59b8324e44e2a59f6b0389",
   "schema": "alpha-bridge/fork-ci",
   "source_branch": "main",
-  "source_commit": "7d7bd2140b3266c7c4205d22a5c46f9440bf9951",
+  "source_commit": "6bec8d9a417dc534c99b1f90a4f874c20906528e",
   "source_repository": "SpikeInterface/spikeinterface",
   "version": 1,
   "workflows": [
