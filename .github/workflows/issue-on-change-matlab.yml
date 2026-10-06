@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: ${{ (github.event_name == 'schedule' || github.event_name == 
-            'workflow_run') && '6bec8d9a417dc534c99b1f90a4f874c20906528e' || 
+            'workflow_run') && '04cae98fcf056ae74fcf72ae6a0cc848b6f797e4' || 
             github.sha }}
       - name: Get changed files
         id: changed-files
@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: ${{ (github.event_name == 'schedule' || github.event_name == 
-            'workflow_run') && '6bec8d9a417dc534c99b1f90a4f874c20906528e' || 
+            'workflow_run') && '04cae98fcf056ae74fcf72ae6a0cc848b6f797e4' || 
             github.sha }}
       - name: Parse files names
         id: parse-files-names
@@ -87,12 +87,12 @@ jobs:
           AB_REPOSITORY: ${{ github.repository }}
           AB_RUN_ID: ${{ github.run_id }}
           AB_HEAD_SHA: ${{ (github.event_name == 'schedule' || github.event_name
-            == 'workflow_run') && '6bec8d9a417dc534c99b1f90a4f874c20906528e' || 
+            == 'workflow_run') && '04cae98fcf056ae74fcf72ae6a0cc848b6f797e4' || 
             github.sha }}
           AB_REF: ${{ (github.event_name == 'schedule' || github.event_name == 
             'workflow_run') && 'refs/heads/main' || github.ref }}
           AB_WORKFLOW_DIGEST: 
-            8282cd8352754380820a0629fa9a2e138d1d99974bb72382e4707efd354b46d9
+            18520e16e276b0b15ee91076e8e32872f951195062123733bad9953072136a18
           AB_EVENT: ${{ github.event_name }}
           AB_SCHEDULE: ${{ github.event.schedule || '' }}
           AB_VARIABLES: ${{ toJSON(vars) }}

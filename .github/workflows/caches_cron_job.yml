@@ -109,12 +109,12 @@ jobs:
           AB_REPOSITORY: ${{ github.repository }}
           AB_RUN_ID: ${{ github.run_id }}
           AB_HEAD_SHA: ${{ (github.event_name == 'schedule' || github.event_name
-            == 'workflow_run') && '6bec8d9a417dc534c99b1f90a4f874c20906528e' || 
+            == 'workflow_run') && '04cae98fcf056ae74fcf72ae6a0cc848b6f797e4' || 
             github.sha }}
           AB_REF: ${{ (github.event_name == 'schedule' || github.event_name == 
             'workflow_run') && 'refs/heads/main' || github.ref }}
           AB_WORKFLOW_DIGEST: 
-            49e8193284f1d0d952bad0b4307dca6789d383bedbd69dc0294bde8f2a973f9d
+            d226794d7072a85299925f9961f0c35e5c159152859dc9a03427d3c0035d1f9c
           AB_EVENT: ${{ github.event_name }}
           AB_SCHEDULE: ${{ github.event.schedule || '' }}
           AB_VARIABLES: ${{ toJSON(vars) }}

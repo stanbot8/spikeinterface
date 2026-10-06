@@ -22,7 +22,7 @@ jobs:
 
         with:
           ref: ${{ (github.event_name == 'schedule' || github.event_name == 
-            'workflow_run') && '6bec8d9a417dc534c99b1f90a4f874c20906528e' || 
+            'workflow_run') && '04cae98fcf056ae74fcf72ae6a0cc848b6f797e4' || 
             github.sha }}
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -70,7 +70,7 @@ jobs:
 
         with:
           ref: ${{ (github.event_name == 'schedule' || github.event_name == 
-            'workflow_run') && '6bec8d9a417dc534c99b1f90a4f874c20906528e' || 
+            'workflow_run') && '04cae98fcf056ae74fcf72ae6a0cc848b6f797e4' || 
             github.sha }}
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6
@@ -137,12 +137,12 @@ jobs:
           AB_REPOSITORY: ${{ github.repository }}
           AB_RUN_ID: ${{ github.run_id }}
           AB_HEAD_SHA: ${{ (github.event_name == 'schedule' || github.event_name
-            == 'workflow_run') && '6bec8d9a417dc534c99b1f90a4f874c20906528e' || 
+            == 'workflow_run') && '04cae98fcf056ae74fcf72ae6a0cc848b6f797e4' || 
             github.sha }}
           AB_REF: ${{ (github.event_name == 'schedule' || github.event_name == 
             'workflow_run') && 'refs/heads/main' || github.ref }}
           AB_WORKFLOW_DIGEST: 
-            52d8defdb68df0033ce9333b806353daee96cdc9dad07969dcb1e450c4d63c72
+            9110af6b3a60fb2e919bf28b4e5379a105a26a39a21523da5de9deb0693eca56
           AB_EVENT: ${{ github.event_name }}
           AB_SCHEDULE: ${{ github.event.schedule || '' }}
           AB_VARIABLES: ${{ toJSON(vars) }}
