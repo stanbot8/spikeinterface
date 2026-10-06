@@ -3,11 +3,11 @@ name: Complete tests
 on:
   workflow_dispatch:
   schedule:
-  - cron: 0 12 * * 0      # Weekly on Sunday at noon UTC
+    - cron: "0 12 * * 0"  # Weekly on Sunday at noon UTC
   pull_request:
     types: [synchronize, opened, reopened]
     branches:
-    - main
+      - main
 
 env:
   KACHERY_API_KEY: ${{ secrets.KACHERY_API_KEY }}
@@ -27,264 +27,265 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.10', '3.13']  # Lower and higher versions we support
+        python-version: ["3.10", "3.13"]  # Lower and higher versions we support
         os: [macos-latest, windows-latest, ubuntu-latest]
     steps:
-    - uses: actions/checkout@v6
-      with:
-        ref: ${{ (github.event_name == 'schedule' || github.event_name == 
-          'workflow_run') && '6bec8d9a417dc534c99b1f90a4f874c20906528e' || 
-          github.sha }}
-    - name: Setup Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v6
-      with:
-        python-version: ${{ matrix.python-version }}
-    - uses: astral-sh/setup-uv@v7
-      with:
-        python-version: ${{ matrix.python-version }}
-        enable-cache: true
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ (github.event_name == 'schedule' || github.event_name == 
+            'workflow_run') && '6bec8d9a417dc534c99b1f90a4f874c20906528e' || 
+            github.sha }}
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
 
-    - name: Free space
-      if: runner.os == 'Linux'
-      run: |
-        sudo rm -rf /usr/local/lib/android
-        sudo rm -rf /usr/share/dotnet
-        sudo rm -rf /opt/ghc
-        sudo rm -rf /usr/local/graalvm
-        sudo rm -rf /usr/local/share/powershell
-        sudo rm -rf /usr/local/share/chromium
-        df -h
+      - name: Free space
+        if: runner.os == 'Linux'
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/graalvm
+          sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /usr/local/share/chromium
+          df -h
 
-    - name: Get changed files
-      id: changed-files
-      uses: tj-actions/changed-files@v46.0.1
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v46.0.1
 
-    - name: List all changed files
-      shell: bash
-      env:
-        ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
-      run: |
-        for file in ${ALL_CHANGED_FILES}; do
-          echo "$file was changed"
-        done
+      - name: List all changed files
+        shell: bash
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files 
+            }}
+        run: |
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "$file was changed"
+          done
 
-    - name: Set testing environment    # This decides which tests are run and whether to install special dependencies
-      shell: bash
-      run: |
-        changed_files="${{ steps.changed-files.outputs.all_changed_files }}"
-        python .github/scripts/determine_testing_environment.py $changed_files
+      - name: Set testing environment  # This decides which tests are run and whether to install special dependencies
+        shell: bash
+        run: |
+          changed_files="${{ steps.changed-files.outputs.all_changed_files }}"
+          python .github/scripts/determine_testing_environment.py $changed_files
 
-    - name: Display testing environment
-      shell: bash
-      run: |
-        echo "RUN_EXTRACTORS_TESTS=${RUN_EXTRACTORS_TESTS}"
-        echo "RUN_PREPROCESSING_TESTS=${RUN_PREPROCESSING_TESTS}"
-        echo "RUN_POSTPROCESSING_TESTS=${RUN_POSTPROCESSING_TESTS}"
-        echo "RUN_METRICS_TESTS=${RUN_METRICS_TESTS}"
-        echo "RUN_CURATION_TESTS=${RUN_CURATION_TESTS}"
-        echo "RUN_SORTINGCOMPONENTS_TESTS=${RUN_SORTINGCOMPONENTS_TESTS}"
-        echo "RUN_GENERATION_TESTS=${RUN_GENERATION_TESTS}"
-        echo "RUN_COMPARISON_TESTS=${RUN_COMPARISON_TESTS}"
-        echo "RUN_WIDGETS_TESTS=${RUN_WIDGETS_TESTS}"
-        echo "RUN_EXPORTERS_TESTS=${RUN_EXPORTERS_TESTS}"
-        echo "RUN_SORTERS_TESTS=${RUN_SORTERS_TESTS}"
-        echo "RUN_INTERNAL_SORTERS_TESTS=${RUN_INTERNAL_SORTERS_TESTS}"
-        echo "INSTALL_PLEXON_DEPENDENCIES=${INSTALL_PLEXON_DEPENDENCIES}"
-        echo "RUN_STREAMING_EXTRACTORS_TESTS=${RUN_STREAMING_EXTRACTORS_TESTS}"
+      - name: Display testing environment
+        shell: bash
+        run: |
+          echo "RUN_EXTRACTORS_TESTS=${RUN_EXTRACTORS_TESTS}"
+          echo "RUN_PREPROCESSING_TESTS=${RUN_PREPROCESSING_TESTS}"
+          echo "RUN_POSTPROCESSING_TESTS=${RUN_POSTPROCESSING_TESTS}"
+          echo "RUN_METRICS_TESTS=${RUN_METRICS_TESTS}"
+          echo "RUN_CURATION_TESTS=${RUN_CURATION_TESTS}"
+          echo "RUN_SORTINGCOMPONENTS_TESTS=${RUN_SORTINGCOMPONENTS_TESTS}"
+          echo "RUN_GENERATION_TESTS=${RUN_GENERATION_TESTS}"
+          echo "RUN_COMPARISON_TESTS=${RUN_COMPARISON_TESTS}"
+          echo "RUN_WIDGETS_TESTS=${RUN_WIDGETS_TESTS}"
+          echo "RUN_EXPORTERS_TESTS=${RUN_EXPORTERS_TESTS}"
+          echo "RUN_SORTERS_TESTS=${RUN_SORTERS_TESTS}"
+          echo "RUN_INTERNAL_SORTERS_TESTS=${RUN_INTERNAL_SORTERS_TESTS}"
+          echo "INSTALL_PLEXON_DEPENDENCIES=${INSTALL_PLEXON_DEPENDENCIES}"
+          echo "RUN_STREAMING_EXTRACTORS_TESTS=${RUN_STREAMING_EXTRACTORS_TESTS}"
 
-    - name: Install packages
-      run: |
-        uv pip install --system -e . --group test-core
-      shell: bash
+      - name: Install packages
+        run: |
+          uv pip install --system -e . --group test-core
+        shell: bash
 
-    - name: Pip list
-      run: |-
-        uv pip list --system
-
-
-    - name: Install Dependencies for Timing Display
-      run: |
-        uv pip install --system tabulate
-        uv pip install --system pandas
-      shell: bash
-
-    - name: Set execute permissions on run_tests.sh
-      shell: bash
-      run: |-
-        chmod +x .github/run_tests.sh
+      - name: Pip list
+        run: |-
+          uv pip list --system
 
 
-    - name: Test core
-      shell: bash
-      run: |-
-        ./.github/run_tests.sh core --no-virtual-env
+      - name: Install Dependencies for Timing Display
+        run: |
+          uv pip install --system tabulate
+          uv pip install --system pandas
+        shell: bash
+
+      - name: Set execute permissions on run_tests.sh
+        shell: bash
+        run: |-
+          chmod +x .github/run_tests.sh
 
 
-    - name: Get current hash (SHA) of the ephy_testing_data repo
-      shell: bash
-      id: repo_hash
-      run: |-
-        echo "dataset_hash=$(git ls-remote https://gin.g-node.org/NeuralEnsemble/ephy_testing_data.git HEAD | cut -f1)" >> $GITHUB_OUTPUT
+      - name: Test core
+        shell: bash
+        run: |-
+          ./.github/run_tests.sh core --no-virtual-env
 
 
-    - name: Cache datasets
-      if: env.RUN_EXTRACTORS_TESTS == 'true' || env.RUN_PREPROCESSING_TESTS == 
-        'true'
-      id: cache-datasets
-      uses: actions/cache/restore@v5
-      with:
-        path: spikeinterface_datasets
-        key: datasets-${{ steps.repo_hash.outputs.dataset_hash }}
-        restore-keys: datasets
-        enableCrossOsArchive: true
+      - name: Get current hash (SHA) of the ephy_testing_data repo
+        shell: bash
+        id: repo_hash
+        run: |-
+          echo "dataset_hash=$(git ls-remote https://gin.g-node.org/NeuralEnsemble/ephy_testing_data.git HEAD | cut -f1)" >> $GITHUB_OUTPUT
 
-    - name: Install git-annex
-      shell: bash
-      if: env.RUN_EXTRACTORS_TESTS == 'true' || env.RUN_PREPROCESSING_TESTS == 
-        'true'
-      run: |
-        uv pip install --system datalad-installer
-        if [ ${{ runner.os }} = 'Linux' ]; then
-          datalad-installer --sudo ok git-annex --method datalad/packages
-        elif [ ${{ runner.os }} = 'macOS' ]; then
-          datalad-installer --sudo ok git-annex --method brew
-        elif [ ${{ runner.os }} = 'Windows' ]; then
-          datalad-installer --sudo ok git-annex --method datalad/git-annex:release
-        fi
-        git config --global filter.annex.process "git-annex filter-process"  # recommended for efficiency
 
-    - name: Install Plexon dependencies
-      if: env.INSTALL_PLEXON_DEPENDENCIES == 'true'
-      uses: ./.github/actions/install-wine
+      - name: Cache datasets
+        if: env.RUN_EXTRACTORS_TESTS == 'true' || env.RUN_PREPROCESSING_TESTS ==
+          'true'
+        id: cache-datasets
+        uses: actions/cache/restore@v5
+        with:
+          path: spikeinterface_datasets
+          key: datasets-${{ steps.repo_hash.outputs.dataset_hash }}
+          restore-keys: datasets
+          enableCrossOsArchive: true
 
-    - name: Test extractors
-      shell: bash
-      env:
-        HDF5_PLUGIN_PATH: ${{ github.workspace }}/hdf5_plugin_path_maxwell
-      if: env.RUN_EXTRACTORS_TESTS == 'true'
-      run: |
-        uv pip install --system -e .[extractors,streaming_extractors] --group test-extractors
-        uv pip list --system
-        ./.github/run_tests.sh "extractors and not streaming_extractors" --no-virtual-env
-
-    - name: Test streaming extractors
-      shell: bash
-      if: env.RUN_STREAMING_EXTRACTORS_TESTS == 'true'
-      run: |
-        uv pip install --system -e .[streaming_extractors] --group test-streaming-extractors
-        uv pip list --system
-        ./.github/run_tests.sh "streaming_extractors" --no-virtual-env
-
-    - name: Test preprocessing
-      shell: bash
-      if: env.RUN_PREPROCESSING_TESTS == 'true'
-      run: |
-        uv pip install --system -e .[preprocessing] --group test-preprocessing
-        uv pip list --system
-        ./.github/run_tests.sh "preprocessing and not deepinterpolation" --no-virtual-env
-
-    - name: Test postprocessing
-      shell: bash
-      if: env.RUN_POSTPROCESSING_TESTS == 'true'
-      run: |
-        uv pip install --system -e .[postprocessing] --group test-postprocessing
-        uv pip list --system
-        ./.github/run_tests.sh postprocessing --no-virtual-env
-
-    - name: Test metrics
-      shell: bash
-      if: env.RUN_METRICS_TESTS == 'true'
-      run: |
-        uv pip install --system -e .[metrics] --group test-metrics
-        uv pip list --system
-        ./.github/run_tests.sh metrics --no-virtual-env
-
-    - name: Test comparison
-      shell: bash
-      if: env.RUN_COMPARISON_TESTS == 'true'
-      run: |
-        uv pip install --system -e .[comparison] --group test-comparison
-        uv pip list --system
-        ./.github/run_tests.sh comparison --no-virtual-env
-
-    - name: Test core sorters
-      shell: bash
-      if: env.RUN_SORTERS_TESTS == 'true'
-      run: |
-        uv pip install --system -e .[sorters] --group test-sorters
-        uv pip list --system
-        ./.github/run_tests.sh sorters --no-virtual-env
-
-    - name: Test internal sorters
-      shell: bash
-      if: env.RUN_INTERNAL_SORTERS_TESTS == 'true'
-      run: |
-        uv pip install --system -e .[sorters_internal] --group test-sorters-internal
-        uv pip list --system
-        ./.github/run_tests.sh sorters_internal --no-virtual-env
-
-    - name: Test curation
-      shell: bash
-      if: env.RUN_CURATION_TESTS == 'true'
-      env:
-        HF_TOKEN: ${{ secrets.HF_TOKEN }}
-      run: |
-        uv pip install --system -e .[curation] --group test-curation
-        uv pip list --system
-        ./.github/run_tests.sh curation --no-virtual-env
-
-    - name: Test widgets
-      shell: bash
-      if: env.RUN_WIDGETS_TESTS == 'true'
-      env:
-        KACHERY_ZONE: scratch
-      run: |
-        uv pip install --system -e .[widgets] --group test-widgets
-        uv pip list --system
-        ./.github/run_tests.sh widgets --no-virtual-env -s
-
-    - name: Test exporters
-      shell: bash
-      if: env.RUN_EXPORTERS_TESTS == 'true'
-      run: |
-        uv pip install --system -e .[exporters] --group test-exporters
-        uv pip list --system
-        ./.github/run_tests.sh exporters --no-virtual-env
-
-    - name: Test sortingcomponents
-      shell: bash
-      if: env.RUN_SORTINGCOMPONENTS_TESTS == 'true'
-      env:
-        HF_TOKEN: ${{ secrets.HF_TOKEN }}
-      run: |
-        uv pip install --system -e .[sortingcomponents] --group test-sortingcomponents
-        uv pip list --system
-
-        # Internal shell check for platform and env var
-        if [[ "$RUNNER_OS" == "macOS" ]]; then
-          # Locate the binary dynamically
-          SHM_BINARY=$(python -c "import torch; from pathlib import Path; print(Path(torch.__file__).parent / 'bin' / 'torch_shm_manager')")
-          if [ -f "$SHM_BINARY" ]; then
-            echo "Applying chmod +x to $SHM_BINARY"
-            chmod +x "$SHM_BINARY"
-          else
-            echo "Warning: torch_shm_manager not found at $SHM_BINARY"
+      - name: Install git-annex
+        shell: bash
+        if: env.RUN_EXTRACTORS_TESTS == 'true' || env.RUN_PREPROCESSING_TESTS ==
+          'true'
+        run: |
+          uv pip install --system datalad-installer
+          if [ ${{ runner.os }} = 'Linux' ]; then
+            datalad-installer --sudo ok git-annex --method datalad/packages
+          elif [ ${{ runner.os }} = 'macOS' ]; then
+            datalad-installer --sudo ok git-annex --method brew
+          elif [ ${{ runner.os }} = 'Windows' ]; then
+            datalad-installer --sudo ok git-annex --method datalad/git-annex:release
           fi
-        fi
+          git config --global filter.annex.process "git-annex filter-process"  # recommended for efficiency
 
-        ./.github/run_tests.sh sortingcomponents --no-virtual-env
+      - name: Install Plexon dependencies
+        if: env.INSTALL_PLEXON_DEPENDENCIES == 'true'
+        uses: ./.github/actions/install-wine
 
-    - name: Test generation
-      shell: bash
-      if: env.RUN_GENERATION_TESTS == 'true'
-      run: |
-        uv pip install --system -e .[generation] --group test-generation
-        uv pip list --system
-        ./.github/run_tests.sh generation --no-virtual-env
+      - name: Test extractors
+        shell: bash
+        env:
+          HDF5_PLUGIN_PATH: ${{ github.workspace }}/hdf5_plugin_path_maxwell
+        if: env.RUN_EXTRACTORS_TESTS == 'true'
+        run: |
+          uv pip install --system -e .[extractors,streaming_extractors] --group test-extractors
+          uv pip list --system
+          ./.github/run_tests.sh "extractors and not streaming_extractors" --no-virtual-env
+
+      - name: Test streaming extractors
+        shell: bash
+        if: env.RUN_STREAMING_EXTRACTORS_TESTS == 'true'
+        run: |
+          uv pip install --system -e .[streaming_extractors] --group test-streaming-extractors
+          uv pip list --system
+          ./.github/run_tests.sh "streaming_extractors" --no-virtual-env
+
+      - name: Test preprocessing
+        shell: bash
+        if: env.RUN_PREPROCESSING_TESTS == 'true'
+        run: |
+          uv pip install --system -e .[preprocessing] --group test-preprocessing
+          uv pip list --system
+          ./.github/run_tests.sh "preprocessing and not deepinterpolation" --no-virtual-env
+
+      - name: Test postprocessing
+        shell: bash
+        if: env.RUN_POSTPROCESSING_TESTS == 'true'
+        run: |
+          uv pip install --system -e .[postprocessing] --group test-postprocessing
+          uv pip list --system
+          ./.github/run_tests.sh postprocessing --no-virtual-env
+
+      - name: Test metrics
+        shell: bash
+        if: env.RUN_METRICS_TESTS == 'true'
+        run: |
+          uv pip install --system -e .[metrics] --group test-metrics
+          uv pip list --system
+          ./.github/run_tests.sh metrics --no-virtual-env
+
+      - name: Test comparison
+        shell: bash
+        if: env.RUN_COMPARISON_TESTS == 'true'
+        run: |
+          uv pip install --system -e .[comparison] --group test-comparison
+          uv pip list --system
+          ./.github/run_tests.sh comparison --no-virtual-env
+
+      - name: Test core sorters
+        shell: bash
+        if: env.RUN_SORTERS_TESTS == 'true'
+        run: |
+          uv pip install --system -e .[sorters] --group test-sorters
+          uv pip list --system
+          ./.github/run_tests.sh sorters --no-virtual-env
+
+      - name: Test internal sorters
+        shell: bash
+        if: env.RUN_INTERNAL_SORTERS_TESTS == 'true'
+        run: |
+          uv pip install --system -e .[sorters_internal] --group test-sorters-internal
+          uv pip list --system
+          ./.github/run_tests.sh sorters_internal --no-virtual-env
+
+      - name: Test curation
+        shell: bash
+        if: env.RUN_CURATION_TESTS == 'true'
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          uv pip install --system -e .[curation] --group test-curation
+          uv pip list --system
+          ./.github/run_tests.sh curation --no-virtual-env
+
+      - name: Test widgets
+        shell: bash
+        if: env.RUN_WIDGETS_TESTS == 'true'
+        env:
+          KACHERY_ZONE: "scratch"
+        run: |
+          uv pip install --system -e .[widgets] --group test-widgets
+          uv pip list --system
+          ./.github/run_tests.sh widgets --no-virtual-env -s
+
+      - name: Test exporters
+        shell: bash
+        if: env.RUN_EXPORTERS_TESTS == 'true'
+        run: |
+          uv pip install --system -e .[exporters] --group test-exporters
+          uv pip list --system
+          ./.github/run_tests.sh exporters --no-virtual-env
+
+      - name: Test sortingcomponents
+        shell: bash
+        if: env.RUN_SORTINGCOMPONENTS_TESTS == 'true'
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          uv pip install --system -e .[sortingcomponents] --group test-sortingcomponents
+          uv pip list --system
+
+          # Internal shell check for platform and env var
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            # Locate the binary dynamically
+            SHM_BINARY=$(python -c "import torch; from pathlib import Path; print(Path(torch.__file__).parent / 'bin' / 'torch_shm_manager')")
+            if [ -f "$SHM_BINARY" ]; then
+              echo "Applying chmod +x to $SHM_BINARY"
+              chmod +x "$SHM_BINARY"
+            else
+              echo "Warning: torch_shm_manager not found at $SHM_BINARY"
+            fi
+          fi
+
+          ./.github/run_tests.sh sortingcomponents --no-virtual-env
+
+      - name: Test generation
+        shell: bash
+        if: env.RUN_GENERATION_TESTS == 'true'
+        run: |
+          uv pip install --system -e .[generation] --group test-generation
+          uv pip list --system
+          ./.github/run_tests.sh generation --no-virtual-env
     needs:
-    - alpha_bridge_inputs
-    if: ${{ (success()) && needs.alpha_bridge_inputs.outputs.changed == 'true' 
-      }}
+      - alpha_bridge_inputs
+    if: |-
+      ${{ (success()) && needs.alpha_bridge_inputs.outputs.changed == 'true' }}
   alpha_bridge_inputs:
     name: CI input check
     runs-on: ubuntu-latest
@@ -298,115 +299,116 @@ jobs:
     outputs:
       changed: ${{ steps.identity.outputs.changed }}
     steps:
-    - id: identity
-      name: Check source, workflow, variables, and runner inputs
-      env:
-        GH_TOKEN: ${{ github.token }}
-        AB_REPOSITORY: ${{ github.repository }}
-        AB_RUN_ID: ${{ github.run_id }}
-        AB_HEAD_SHA: ${{ (github.event_name == 'schedule' || github.event_name 
-          == 'workflow_run') && '6bec8d9a417dc534c99b1f90a4f874c20906528e' || 
-          github.sha }}
-        AB_REF: ${{ (github.event_name == 'schedule' || github.event_name == 
-          'workflow_run') && 'refs/heads/main' || github.ref }}
-        AB_WORKFLOW_DIGEST: 
-          4879ada8c4550d1c9e30a837ccb3a78361d0c14a82c440dbe8c7e77a71186ae5
-        AB_EVENT: ${{ github.event_name }}
-        AB_SCHEDULE: ${{ github.event.schedule || '' }}
-        AB_VARIABLES: ${{ toJSON(vars) }}
-        AB_INPUTS: ${{ toJSON(inputs) }}
-        AB_WORKFLOW_RUN: ${{ toJSON(github.event.workflow_run) }}
-      shell: bash
-      run: "python3 - <<'ALPHA_BRIDGE_CI_PY'\n\"\"\"Native automatic-CI input check,
-        embedded in the owned fork configuration.\"\"\"\n\nfrom __future__ import
-        annotations\n\nimport base64\nimport hashlib\nimport json\nimport os\nimport
-        re\nimport urllib.parse\nimport urllib.request\n\nINPUT_CHECK_NAMES = (\"\
-        CI input check\", \"AlphaBridge input check\")\nINPUT_IDENTITY_PREFIXES =
-        (\"CI input identity \", \"AlphaBridge input identity \")\n\n\ndef input_identity(job):\n\
-        \    for step in job.get(\"steps\", []):\n        if step.get(\"conclusion\"\
-        ) != \"success\":\n            continue\n        name = step.get(\"name\"\
-        , \"\")\n        for prefix in INPUT_IDENTITY_PREFIXES:\n            if name.startswith(prefix):\n\
-        \                identity = name.removeprefix(prefix)\n                if
-        re.fullmatch(r\"[0-9a-f]{64}\", identity):\n                    return identity\n\
-        \    return \"\"\n\n\ndef parent_has_work(get, repository, parent):\n    if
-        (\n        not parent\n        or parent.get(\"head_branch\") != \"alpha-bridge-ci\"\
-        \n        or parent.get(\"status\") != \"completed\"\n    ):\n        return
-        True\n    sha = parent[\"head_sha\"]\n    if re.fullmatch(r\"[0-9a-f]{40}\"\
-        , sha) is None:\n        raise ValueError(\"parent workflow has no exact configuration
-        commit\")\n    record = get(f\"/repos/{repository}\")\n    marker_file = get(f\"\
-        /repos/{repository}/contents/.github/alpha-bridge-ci.json?ref={sha}\")\n \
-        \   marker = json.loads(base64.b64decode(marker_file[\"content\"]))\n    if
-        (\n        record.get(\"fork\") is not True\n        or marker.get(\"schema\"\
-        ) != \"alpha-bridge/fork-ci\"\n        or marker.get(\"source_repository\"\
-        ) != record.get(\"parent\", {}).get(\"full_name\")\n    ):\n        raise
-        ValueError(\"parent CI configuration has no verified fork ownership\")\n \
-        \   path = parent[\"path\"].split(\"@\", 1)[0]\n    if not path.startswith(\"\
-        .github/workflows/\") or \"/\" in path.removeprefix(\".github/workflows/\"\
-        ):\n        raise ValueError(\"parent workflow path is outside its configuration
-        owner\")\n    definition = get(f\"/repos/{repository}/contents/{urllib.parse.quote(path,
-        safe='/')}?ref={sha}\")\n    if hashlib.sha256(base64.b64decode(definition[\"\
-        content\"])).hexdigest() != marker.get(\n        \"definition_sha256\", {}\n\
-        \    ).get(path):\n        raise ValueError(\"parent workflow differs from
-        its owned definition\")\n    if path == \".github/workflows/alpha-bridge-ci-verify.yml\"\
-        :\n        return False\n    jobs = []\n    page = 1\n    while True:\n  \
-        \      values = get(\n            f\"/repos/{repository}/actions/runs/{parent['id']}/jobs?per_page=100&page={page}\"\
-        \n        )[\"jobs\"]\n        jobs.extend(values)\n        if len(values)
-        < 100:\n            break\n        page += 1\n    guards = [\n        job\n\
-        \        for job in jobs\n        if job.get(\"name\") in INPUT_CHECK_NAMES\n\
-        \        and job.get(\"conclusion\") == \"success\"\n        and input_identity(job)\n\
-        \    ]\n    return not guards or any(\n        job not in guards and job.get(\"\
-        conclusion\") != \"skipped\" for job in jobs\n    )\n\n\ndef changed(get,
-        *, repository, run_id, identity, job_name):\n    current = get(f\"/repos/{repository}/actions/runs/{run_id}\"\
-        )\n    event = current[\"event\"]\n    page = 1\n    while True:\n       \
-        \ # Filter locally: GitHub caps filtered searches at 1,000 results.\n    \
-        \    query = urllib.parse.urlencode({\"per_page\": 100, \"page\": page})\n\
-        \        runs = get(f\"/repos/{repository}/actions/workflows/{current['workflow_id']}/runs?{query}\"\
-        )\n        for run in runs[\"workflow_runs\"]:\n            if run[\"id\"\
-        ] == run_id:\n                continue\n            if run.get(\"head_branch\"\
-        ) != current[\"head_branch\"] or run.get(\"event\") != event:\n          \
-        \      continue\n            job_page = 1\n            while True:\n     \
-        \           jobs = get(\n                    f\"/repos/{repository}/actions/runs/{run['id']}/jobs?per_page=100&page={job_page}\"\
-        \n                )[\"jobs\"]\n                for job in jobs:\n        \
-        \            if (\n                        (\n                           \
-        \ job[\"name\"] in INPUT_CHECK_NAMES\n                            if job_name
-        in INPUT_CHECK_NAMES\n                            else job[\"name\"] == job_name\n\
-        \                        )\n                        and job.get(\"status\"\
-        ) == \"completed\"\n                        and job.get(\"conclusion\") ==
-        \"success\"\n                        and input_identity(job) == identity\n\
-        \                    ):\n                        return False\n          \
-        \      if len(jobs) < 100:\n                    break\n                job_page
-        += 1\n        if len(runs[\"workflow_runs\"]) < 100:\n            return True\n\
-        \        page += 1\n\n\ndef main():\n    event = os.environ[\"AB_EVENT\"]\n\
-        \    event_payload = None\n    if event not in {\"schedule\", \"workflow_run\"\
-        }:\n        with open(os.environ[\"GITHUB_EVENT_PATH\"], encoding=\"utf-8\"\
-        ) as payload_file:\n            event_payload = json.load(payload_file)\n\
-        \    inputs = {\n        \"source_commit\": os.environ[\"AB_HEAD_SHA\"],\n\
-        \        \"source_ref\": os.environ[\"AB_REF\"],\n        \"workflow_definition\"\
-        : os.environ[\"AB_WORKFLOW_DIGEST\"],\n        \"event\": event,\n       \
-        \ \"event_payload\": event_payload,\n        \"schedule\": os.environ[\"AB_SCHEDULE\"\
-        ],\n        \"variables\": json.loads(os.environ[\"AB_VARIABLES\"]),\n   \
-        \     \"inputs\": json.loads(os.environ[\"AB_INPUTS\"]),\n        \"runner_image\"\
-        : [os.environ.get(\"ImageOS\", \"\"), os.environ.get(\"ImageVersion\", \"\"\
-        )],\n        \"producer\": json.loads(os.environ.get(\"AB_WORKFLOW_RUN\",
-        \"null\")),\n    }\n    identity = hashlib.sha256(json.dumps(inputs, sort_keys=True).encode()).hexdigest()\n\
-        \n    def get(path):\n        request = urllib.request.Request(\n        \
-        \    \"https://api.github.com\" + path,\n            headers={\n         \
-        \       \"Authorization\": \"Bearer \" + os.environ[\"GH_TOKEN\"],\n     \
-        \           \"Accept\": \"application/vnd.github+json\",\n               \
-        \ \"X-GitHub-Api-Version\": \"2026-03-10\",\n            },\n        )\n \
-        \       with urllib.request.urlopen(request, timeout=60) as response:\n  \
-        \          return json.load(response)\n\n    manual = event == \"workflow_dispatch\"\
-        \ or int(os.environ[\"GITHUB_RUN_ATTEMPT\"]) > 1\n    should_run = manual
-        or (\n        (\n            inputs[\"event\"] != \"workflow_run\"\n     \
-        \       or parent_has_work(get, os.environ[\"AB_REPOSITORY\"], inputs[\"producer\"\
-        ])\n        )\n        and changed(\n            get,\n            repository=os.environ[\"\
-        AB_REPOSITORY\"],\n            run_id=int(os.environ[\"AB_RUN_ID\"]),\n  \
-        \          identity=identity,\n            job_name=\"CI input check\",\n\
-        \        )\n    )\n    with open(os.environ[\"GITHUB_OUTPUT\"], \"a\", encoding=\"\
-        utf-8\") as output:\n        output.write(f\"digest={identity}\\nchanged={str(should_run).lower()}\\\
-        n\")\n    print(\n        \"Explicit CI run requested\"\n        if manual\n\
-        \        else \"CI inputs changed\"\n        if should_run\n        else \"\
-        CI inputs unchanged; build and test jobs skipped\"\n    )\n\n\nif __name__
-        == \"__main__\":\n    main()\n\nALPHA_BRIDGE_CI_PY\n"
-    - name: CI input identity ${{ steps.identity.outputs.digest }}
-      run: echo 'Input identity recorded'
+      - id: identity
+        name: Check source, workflow, variables, and runner inputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AB_REPOSITORY: ${{ github.repository }}
+          AB_RUN_ID: ${{ github.run_id }}
+          AB_HEAD_SHA: ${{ (github.event_name == 'schedule' || github.event_name
+            == 'workflow_run') && '6bec8d9a417dc534c99b1f90a4f874c20906528e' || 
+            github.sha }}
+          AB_REF: ${{ (github.event_name == 'schedule' || github.event_name == 
+            'workflow_run') && 'refs/heads/main' || github.ref }}
+          AB_WORKFLOW_DIGEST: 
+            f9d046268623c70d3d33da0d4b57ae109b91f8f8199313546a85f7d129ae9878
+          AB_EVENT: ${{ github.event_name }}
+          AB_SCHEDULE: ${{ github.event.schedule || '' }}
+          AB_VARIABLES: ${{ toJSON(vars) }}
+          AB_INPUTS: ${{ toJSON(inputs) }}
+          AB_WORKFLOW_RUN: ${{ toJSON(github.event.workflow_run) }}
+        shell: bash
+        run: "python3 - <<'ALPHA_BRIDGE_CI_PY'\n\"\"\"Native automatic-CI input check,
+          embedded in the owned fork configuration.\"\"\"\n\nfrom __future__ import
+          annotations\n\nimport base64\nimport hashlib\nimport json\nimport os\nimport
+          re\nimport urllib.parse\nimport urllib.request\n\nINPUT_CHECK_NAMES = (\"\
+          CI input check\", \"AlphaBridge input check\")\nINPUT_IDENTITY_PREFIXES
+          = (\"CI input identity \", \"AlphaBridge input identity \")\n\n\ndef input_identity(job):\n\
+          \    for step in job.get(\"steps\", []):\n        if step.get(\"conclusion\"\
+          ) != \"success\":\n            continue\n        name = step.get(\"name\"\
+          , \"\")\n        for prefix in INPUT_IDENTITY_PREFIXES:\n            if
+          name.startswith(prefix):\n                identity = name.removeprefix(prefix)\n\
+          \                if re.fullmatch(r\"[0-9a-f]{64}\", identity):\n       \
+          \             return identity\n    return \"\"\n\n\ndef parent_has_work(get,
+          repository, parent):\n    if (\n        not parent\n        or parent.get(\"\
+          head_branch\") != \"alpha-bridge-ci\"\n        or parent.get(\"status\"\
+          ) != \"completed\"\n    ):\n        return True\n    sha = parent[\"head_sha\"\
+          ]\n    if re.fullmatch(r\"[0-9a-f]{40}\", sha) is None:\n        raise ValueError(\"\
+          parent workflow has no exact configuration commit\")\n    record = get(f\"\
+          /repos/{repository}\")\n    marker_file = get(f\"/repos/{repository}/contents/.github/alpha-bridge-ci.json?ref={sha}\"\
+          )\n    marker = json.loads(base64.b64decode(marker_file[\"content\"]))\n\
+          \    if (\n        record.get(\"fork\") is not True\n        or marker.get(\"\
+          schema\") != \"alpha-bridge/fork-ci\"\n        or marker.get(\"source_repository\"\
+          ) != record.get(\"parent\", {}).get(\"full_name\")\n    ):\n        raise
+          ValueError(\"parent CI configuration has no verified fork ownership\")\n\
+          \    path = parent[\"path\"].split(\"@\", 1)[0]\n    if not path.startswith(\"\
+          .github/workflows/\") or \"/\" in path.removeprefix(\".github/workflows/\"\
+          ):\n        raise ValueError(\"parent workflow path is outside its configuration
+          owner\")\n    definition = get(f\"/repos/{repository}/contents/{urllib.parse.quote(path,
+          safe='/')}?ref={sha}\")\n    if hashlib.sha256(base64.b64decode(definition[\"\
+          content\"])).hexdigest() != marker.get(\n        \"definition_sha256\",
+          {}\n    ).get(path):\n        raise ValueError(\"parent workflow differs
+          from its owned definition\")\n    if path == \".github/workflows/alpha-bridge-ci-verify.yml\"\
+          :\n        return False\n    jobs = []\n    page = 1\n    while True:\n\
+          \        values = get(\n            f\"/repos/{repository}/actions/runs/{parent['id']}/jobs?per_page=100&page={page}\"\
+          \n        )[\"jobs\"]\n        jobs.extend(values)\n        if len(values)
+          < 100:\n            break\n        page += 1\n    guards = [\n        job\n\
+          \        for job in jobs\n        if job.get(\"name\") in INPUT_CHECK_NAMES\n\
+          \        and job.get(\"conclusion\") == \"success\"\n        and input_identity(job)\n\
+          \    ]\n    return not guards or any(\n        job not in guards and job.get(\"\
+          conclusion\") != \"skipped\" for job in jobs\n    )\n\n\ndef changed(get,
+          *, repository, run_id, identity, job_name):\n    current = get(f\"/repos/{repository}/actions/runs/{run_id}\"\
+          )\n    event = current[\"event\"]\n    page = 1\n    while True:\n     \
+          \   # Filter locally: GitHub caps filtered searches at 1,000 results.\n\
+          \        query = urllib.parse.urlencode({\"per_page\": 100, \"page\": page})\n\
+          \        runs = get(f\"/repos/{repository}/actions/workflows/{current['workflow_id']}/runs?{query}\"\
+          )\n        for run in runs[\"workflow_runs\"]:\n            if run[\"id\"\
+          ] == run_id:\n                continue\n            if run.get(\"head_branch\"\
+          ) != current[\"head_branch\"] or run.get(\"event\") != event:\n        \
+          \        continue\n            job_page = 1\n            while True:\n \
+          \               jobs = get(\n                    f\"/repos/{repository}/actions/runs/{run['id']}/jobs?per_page=100&page={job_page}\"\
+          \n                )[\"jobs\"]\n                for job in jobs:\n      \
+          \              if (\n                        (\n                       \
+          \     job[\"name\"] in INPUT_CHECK_NAMES\n                            if
+          job_name in INPUT_CHECK_NAMES\n                            else job[\"name\"\
+          ] == job_name\n                        )\n                        and job.get(\"\
+          status\") == \"completed\"\n                        and job.get(\"conclusion\"\
+          ) == \"success\"\n                        and input_identity(job) == identity\n\
+          \                    ):\n                        return False\n        \
+          \        if len(jobs) < 100:\n                    break\n              \
+          \  job_page += 1\n        if len(runs[\"workflow_runs\"]) < 100:\n     \
+          \       return True\n        page += 1\n\n\ndef main():\n    event = os.environ[\"\
+          AB_EVENT\"]\n    event_payload = None\n    if event not in {\"schedule\"\
+          , \"workflow_run\"}:\n        with open(os.environ[\"GITHUB_EVENT_PATH\"\
+          ], encoding=\"utf-8\") as payload_file:\n            event_payload = json.load(payload_file)\n\
+          \    inputs = {\n        \"source_commit\": os.environ[\"AB_HEAD_SHA\"],\n\
+          \        \"source_ref\": os.environ[\"AB_REF\"],\n        \"workflow_definition\"\
+          : os.environ[\"AB_WORKFLOW_DIGEST\"],\n        \"event\": event,\n     \
+          \   \"event_payload\": event_payload,\n        \"schedule\": os.environ[\"\
+          AB_SCHEDULE\"],\n        \"variables\": json.loads(os.environ[\"AB_VARIABLES\"\
+          ]),\n        \"inputs\": json.loads(os.environ[\"AB_INPUTS\"]),\n      \
+          \  \"runner_image\": [os.environ.get(\"ImageOS\", \"\"), os.environ.get(\"\
+          ImageVersion\", \"\")],\n        \"producer\": json.loads(os.environ.get(\"\
+          AB_WORKFLOW_RUN\", \"null\")),\n    }\n    identity = hashlib.sha256(json.dumps(inputs,
+          sort_keys=True).encode()).hexdigest()\n\n    def get(path):\n        request
+          = urllib.request.Request(\n            \"https://api.github.com\" + path,\n\
+          \            headers={\n                \"Authorization\": \"Bearer \" +
+          os.environ[\"GH_TOKEN\"],\n                \"Accept\": \"application/vnd.github+json\"\
+          ,\n                \"X-GitHub-Api-Version\": \"2026-03-10\",\n         \
+          \   },\n        )\n        with urllib.request.urlopen(request, timeout=60)
+          as response:\n            return json.load(response)\n\n    manual = event
+          == \"workflow_dispatch\" or int(os.environ[\"GITHUB_RUN_ATTEMPT\"]) > 1\n\
+          \    should_run = manual or (\n        (\n            inputs[\"event\"]
+          != \"workflow_run\"\n            or parent_has_work(get, os.environ[\"AB_REPOSITORY\"\
+          ], inputs[\"producer\"])\n        )\n        and changed(\n            get,\n\
+          \            repository=os.environ[\"AB_REPOSITORY\"],\n            run_id=int(os.environ[\"\
+          AB_RUN_ID\"]),\n            identity=identity,\n            job_name=\"\
+          CI input check\",\n        )\n    )\n    with open(os.environ[\"GITHUB_OUTPUT\"\
+          ], \"a\", encoding=\"utf-8\") as output:\n        output.write(f\"digest={identity}\\\
+          nchanged={str(should_run).lower()}\\n\")\n    print(\n        \"Explicit
+          CI run requested\"\n        if manual\n        else \"CI inputs changed\"\
+          \n        if should_run\n        else \"CI inputs unchanged; build and test
+          jobs skipped\"\n    )\n\n\nif __name__ == \"__main__\":\n    main()\n\n\
+          ALPHA_BRIDGE_CI_PY\n"
+      - name: CI input identity ${{ steps.identity.outputs.digest }}
+        run: echo 'Input identity recorded'
