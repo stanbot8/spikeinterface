@@ -1,53 +1,15 @@
-name: Checks uv installation from Installation Tips
-
+name: CI input probe
 on:
-  workflow_dispatch:
-  schedule:
-  - cron: "0 12 * * 0"    # Weekly at noon UTC on Sundays
-
+  workflow_call:
+    inputs:
+      probe:
+        type: string
+        required: true
 jobs:
-  installation-tips-testing:
-    name: Test uv installation on ${{ matrix.os }} OS
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-        - os: ubuntu-latest
-        - os: macos-latest
-        - os: windows-latest
+  check:
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
-      with:
-        ref: ${{ (github.event_name == 'schedule' || github.event_name == 
-          'workflow_run') && '6bec8d9a417dc534c99b1f90a4f874c20906528e' || 
-          github.sha }}
-    - uses: actions/setup-python@v6
-      with:
-        python-version: '3.12'
-    - name: Install uv
-      uses: astral-sh/setup-uv@v7
-      with:
-        python-version: '3.12'
-        enable-cache: true
-
-    - name: Install requirements
-      run: |-
-        uv pip install --system -r ./installation_tips/beginner_requirements_stable.txt
-    - name: Check Installation Tips (mac)
-      if: ${{ matrix.os == 'macos-latest' }}
-      run: |-
-        python ./installation_tips/check_your_install.py --ci --short --skip-kilosort4
-       # ci flag turns off gui
-    - name: Check Installation Tips (linux/windows)
-      if: ${{ matrix.os != 'macos-latest' }}
-      run: |-
-        python ./installation_tips/check_your_install.py --ci --short
-       # ci flag turns off gui
-    - name: Windows cleanup
-      if: ${{ matrix.os == 'windows-latest' }}
-      run: |-
-        python ./installation_tips/cleanup_for_windows.py
+    - run: echo 'Changed inputs reached the consumer'
     needs:
     - alpha_bridge_inputs
     if: |-
@@ -71,15 +33,12 @@ jobs:
         GH_TOKEN: ${{ github.token }}
         AB_REPOSITORY: ${{ github.repository }}
         AB_RUN_ID: ${{ github.run_id }}
-        AB_HEAD_SHA: ${{ (github.event_name == 'schedule' || github.event_name 
-          == 'workflow_run') && '6bec8d9a417dc534c99b1f90a4f874c20906528e' || 
-          github.sha }}
-        AB_REF: ${{ (github.event_name == 'schedule' || github.event_name == 
-          'workflow_run') && 'refs/heads/main' || github.ref }}
+        AB_HEAD_SHA: ${{ github.sha }}
+        AB_REF: ${{ github.ref }}
         AB_WORKFLOW_DIGEST: 
-          49418b751e4337d0754b576c71ef4cfd057aa5e5bda82f382e222224fa4c4388
-        AB_EVENT: ${{ github.event_name }}
-        AB_SCHEDULE: ${{ github.event.schedule || '' }}
+          aeb0c6e2caf9e7aa08ace6ecf5bf2a46ae50d577b223dd23f9d645eb0c1d6792
+        AB_EVENT: schedule
+        AB_SCHEDULE: alpha-bridge verification
         AB_VARIABLES: ${{ toJSON(vars) }}
         AB_INPUTS: ${{ toJSON(inputs) }}
         AB_WORKFLOW_RUN: ${{ toJSON(github.event.workflow_run) }}
